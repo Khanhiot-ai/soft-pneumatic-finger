@@ -1,0 +1,95 @@
+#include <Wire.h>
+#include <Adafruit_MCP4725.h>
+
+// --- Cấu hình ---
+Adafruit_MCP4725 dac;
+const int monitorPin = A0;
+const float maxPressure_kPa = 500.0;
+const int NUM_SAMPLES = 50; 
+
+// THÊM MỚI: Biến để lưu trữ điện áp zero sau khi hiệu chỉnh
+float zeroVoltageBaseline;
+
+int targetPercentage = 0;
+
+void setup() {
+  Serial.begin(9600);
+  if (!dac.begin(0x60)) {
+    Serial.println("Loi! Khong tim thay chip MCP4725.");
+    while (1);
+  }
+  
+  // --- THÊM MỚI: QUÁ TRÌNH TỰ ĐỘNG HIỆU CHỈNH ---
+  Serial.println("\n---------------------------------------------------------");
+  Serial.println("Bat dau hieu chinh diem 0 trong 3 giay...");
+  Serial.println("VUI LONG DAM BAO VAN DANG O AP SUAT 0 (DA KHOA VAN)");
+  delay(3000); // Chờ 3 giây để ổn định
+
+  long rawSum = 0;
+  for (int i = 0; i < 200; i++) { // Đọc 200 mẫu để có kết quả chính xác
+    rawSum += analogRead(monitorPin);
+    delay(2);
+  }
+  float avgRawValue = (float)rawSum / 200.0;
+  zeroVoltageBaseline = avgRawValue * (5.0 / 1023.0); // Lưu lại mốc 0
+  
+  Serial.print("=> Hieu chinh hoan tat. Dien ap zero duoc dat la: ");
+  Serial.print(zeroVoltageBaseline, 3); // In 3 chữ số thập phân
+  Serial.println(" V");
+  Serial.println("---------------------------------------------------------");
+  Serial.println("He thong da san sang. Nhap % de dat ap suat.");
+}
+
+void loop() {
+  // --- Nhận lệnh mới ---
+  if (Serial.available() > 0) {
+    int newPercentage = Serial.parseInt();
+    while (Serial.available() > 0) { Serial.read(); }
+    if (newPercentage >= 0 && newPercentage <= 100) {
+      targetPercentage = newPercentage;
+      Serial.print("\n=> Nhan lenh moi: ");
+      Serial.print(targetPercentage);
+      Serial.println(" %\n");
+    }
+  }
+
+  // --- Điều khiển van ---
+  uint16_t dacValue = map(targetPercentage, 0, 100, 0, 4095);
+  dac.setVoltage(dacValue, false);
+  float controlVoltage = dacValue * (5.0 / 4095.0);
+
+  // --- Giám sát van (với bộ lọc) ---
+  long rawMonitorSum = 0;
+  for (int i = 0; i < NUM_SAMPLES; i++) {
+    rawMonitorSum += analogRead(monitorPin);
+  }
+  float averageRawValue = (float)rawMonitorSum / NUM_SAMPLES;
+  float monitorVoltage = averageRawValue * (5.0 / 1023.0);
+  
+  float actualPressure = 0;
+  // THAY ĐỔI: Sử dụng mốc 0 đã được hiệu chỉnh
+  if (monitorVoltage > zeroVoltageBaseline) {
+    actualPressure = map_double(monitorVoltage, zeroVoltageBaseline, 5.0, 0.0, maxPressure_kPa);
+  }
+  actualPressure = constrain(actualPressure, 0.0, maxPressure_kPa);
+
+  // --- Hiển thị trạng thái ---
+  Serial.print("LENH GUI DI -> Muc tieu: ");
+  Serial.print(targetPercentage);
+  Serial.print(" % (");
+  Serial.print(controlVoltage, 2);
+  Serial.print("V)");
+  Serial.print("  ||  ");
+  Serial.print("PHAN HOI VE -> Ap suat: ");
+  Serial.print(actualPressure, 1); // Chỉ cần 1 chữ số thập phân cho kPa
+  Serial.print(" kPa (");
+  Serial.print(monitorVoltage, 2);
+  Serial.println("V)");
+
+  delay(500);
+}
+
+// Hàm map cho số thực
+double map_double(double x, double in_min, double in_max, double out_min, double out_max) {
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
