@@ -1,0 +1,48 @@
+#include <Wire.h>
+#include <Adafruit_MCP4725.h>
+
+Adafruit_MCP4725 dac;
+
+void setup() {
+  Serial.begin(9600);
+  
+  // Khởi động DAC với địa chỉ I2C mặc định là 0x62.
+  if (!dac.begin(0x62)) {
+    Serial.println("Khong tim thay chip MCP4725. Kiem tra lai ket noi!");
+    while (1);
+  }
+  
+  Serial.println("DAC da san sang!");
+  Serial.println("Nhap mot gia tri tu 0 den 100 de dat ap suat tuong ung.");
+}
+
+void loop() {
+  if (Serial.available() > 0) {
+    int percentage = Serial.parseInt();
+
+    // *** DÒNG QUAN TRỌNG ĐỂ XÓA BỘ ĐỆM ***
+    // Đọc và loại bỏ tất cả các ký tự còn lại (như ký tự xuống dòng)
+    while (Serial.available() > 0) {
+      Serial.read();
+    }
+    // *************************************
+
+    if (percentage >= 0 && percentage <= 100) {
+      uint16_t dacValue = map(percentage, 0, 100, 0, 4095);
+      dac.setVoltage(dacValue, false);
+
+      float outputVoltage = (5.0 * dacValue) / 4095.0;
+
+      Serial.print("Da dat muc: ");
+      Serial.print(percentage);
+      Serial.print(" %. Gia tri DAC: ");
+      Serial.print(dacValue);
+      Serial.print(". Dien ap ra khoang: ");
+      Serial.print(outputVoltage);
+      Serial.println(" V");
+    } 
+    // Chúng ta không cần mệnh đề 'else' ở đây nữa vì các giá trị không hợp lệ
+    // (ví dụ như ký tự xuống dòng) sẽ trả về 0, nhưng sẽ không ảnh hưởng 
+    // đến lần chạy sau vì bộ đệm đã được xóa.
+  }
+}
