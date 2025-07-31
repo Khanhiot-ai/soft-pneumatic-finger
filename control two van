@@ -1,0 +1,93 @@
+#include <Wire.h>
+#include <Adafruit_MCP4725.h>
+
+// --- Cấu hình cho 2 van ---
+Adafruit_MCP4725 dac1; // DAC cho Van 1 (giả sử địa chỉ 0x60)
+Adafruit_MCP4725 dac2; // DAC cho Van 2 (giả sử địa chỉ 0x61)
+
+const int monitorPin1 = A0; // Chân analog cho Van 1
+const int monitorPin2 = A1; // Chân analog cho Van 2
+
+const float maxPressure_kPa = 500.0;
+const int NUM_SAMPLES = 10; // Giảm số lượng mẫu để biểu đồ phản ứng nhanh hơn
+
+// Biến lưu trữ cho cả 2 van
+float zeroVoltageBaseline1;
+float zeroVoltageBaseline2;
+int targetPercentage1 = 0;
+int targetPercentage2 = 0;
+
+void setup() {
+  Serial.begin(9600);
+
+  // Khởi động DAC 1 & 2
+  dac1.begin(0x60);
+  dac2.begin(0x60);
+  
+  // --- TỰ ĐỘNG HIỆU CHỈNH CHO CẢ 2 VAN ---
+  Serial.println("---------------------------------------------------------");
+  Serial.println("Bat dau hieu chinh diem 0...");
+  delay(3000); 
+
+  // Hiệu chỉnh Van 1
+  long rawSum1 = 0;
+  for (int i = 0; i < 200; i++) { rawSum1 += analogRead(monitorPin1); delay(2); }
+  float avgRawValue1 = (float)rawSum1 / 200.0;
+  zeroVoltageBaseline1 = avgRawValue1 * (5.0 / 1023.0);
+  Serial.print("=> Dien ap zero Van 1: "); Serial.print(zeroVoltageBaseline1, 3); Serial.println(" V");
+
+  // Hiệu chỉnh Van 2
+  long rawSum2 = 0;
+  for (int i = 0; i < 200; i++) { rawSum2 += analogRead(monitorPin2); delay(2); }
+  float avgRawValue2 = (float)rawSum2 / 200.0;
+  zeroVoltageBaseline2 = avgRawValue2 * (5.0 / 1023.0);
+  Serial.print("=> Dien ap zero Van 2: "); Serial.print(zeroVoltageBaseline2, 3); Serial.println(" V");
+  
+  Serial.println("---------------------------------------------------------");
+  Serial.println("He thong san sang. Nhap lenh: <van_so>,<phan_tram>");
+}
+
+void loop() {
+  // --- Nhận lệnh mới (vẫn hoạt động như cũ) ---
+  if (Serial.available() > 0) {
+    String command = Serial.readStringUntil('\n');
+    int commaIndex = command.indexOf(',');
+    if (commaIndex > 0) {
+      int vanNumber = command.substring(0, commaIndex).toInt();
+      int newPercentage = command.substring(commaIndex + 1).toInt();
+      if (newPercentage >= 0 && newPercentage <= 100) {
+        if (vanNumber == 1) targetPercentage1 = newPercentage;
+        else if (vanNumber == 2) targetPercentage2 = newPercentage;
+      }
+    }
+  }
+
+  // --- Điều khiển Van 1 & 2 ---
+  dac1.setVoltage(map(targetPercentage1, 0, 100, 0, 4095), false);
+  dac2.setVoltage(map(targetPercentage2, 0, 100, 0, 4095), false);
+  
+  // --- Đọc và tính toán áp suất phản hồi ---
+  long rawMonitorSum1 = 0;
+  for (int i = 0; i < NUM_SAMPLES; i++) { rawMonitorSum1 += analogRead(monitorPin1); }
+  float monitorVoltage1 = ((float)rawMonitorSum1 / NUM_SAMPLES) * (5.0 / 1023.0);
+  float actualPressure1 = (monitorVoltage1 > zeroVoltageBaseline1) ? map_double(monitorVoltage1, zeroVoltageBaseline1, 5.0, 0.0, maxPressure_kPa) : 0.0;
+  
+  long rawMonitorSum2 = 0;
+  for (int i = 0; i < NUM_SAMPLES; i++) { rawMonitorSum2 += analogRead(monitorPin2); }
+  float monitorVoltage2 = ((float)rawMonitorSum2 / NUM_SAMPLES) * (5.0 / 1023.0);
+  float actualPressure2 = (monitorVoltage2 > zeroVoltageBaseline2) ? map_double(monitorVoltage2, zeroVoltageBaseline2, 5.0, 0.0, maxPressure_kPa) : 0.0;
+
+  // --- IN DỮ LIỆU CHO SERIAL PLOTTER ---
+  // In giá trị của Van 1, theo sau là dấu phẩy
+  Serial.print(actualPressure1);
+  Serial.print(",");
+  // In giá trị của Van 2 và ký tự xuống dòng
+  Serial.println(actualPressure2);
+  
+  delay(500); // Giảm delay để biểu đồ mượt hơn
+}
+
+// Hàm map cho số thực
+double map_double(double x, double in_min, double in_max, double out_min, double out_max) {
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
