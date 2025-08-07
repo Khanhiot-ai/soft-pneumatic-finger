@@ -1,0 +1,120 @@
+#include <Wire.h>
+#include <Adafruit_MCP4725.h>
+
+// --- Sử dụng Struct để quản lý từng van ---
+struct VanController {
+  Adafruit_MCP4725 dac;
+  uint8_t i2c_address;
+  int monitorPin;
+  
+  float zeroVoltageBaseline;
+  int targetPercentage; // Thêm lại biến này để điều khiển linh hoạt
+  float actualPressure_kPa;
+};
+
+// --- Cấu hình ---
+VanController van1 = { Adafruit_MCP4725(), 0x60, A0, 0.0, 0, 0.0 };
+VanController van2 = { Adafruit_MCP4725(), 0x60, A1, 0.0, 0, 0.0 };
+
+const float maxPressure_kPa = 500.0;
+const int NUM_SAMPLES = 50;
+
+// --- Khai báo hàm ---
+void hieuChinhVan(VanController &van, int vanNumber);
+void capNhatVan(VanController &van);
+double map_double(double x, double in_min, double in_max, double out_min, double out_max);
+
+void setup() {
+  Serial.begin(9600);
+
+  // Khởi động DAC cho cả 2 van
+  van1.dac.begin(van1.i2c_address);
+  van2.dac.begin(van2.i2c_address);
+  
+  // --- TỰ ĐỘNG HIỆU CHỈNH ---
+  Serial.println("\n---------------------------------------------------------");
+  Serial.println("Bat dau hieu chinh diem 0...");
+  Serial.println("VUI LONG DAM BAO CA 2 VAN DANG O AP SUAT 0");
+  delay(3000); 
+
+  hieuChinhVan(van1, 1);
+  hieuChinhVan(van2, 2);
+  
+  // --- THAY ĐỔI: ĐẶT ÁP SUẤT MẶC ĐỊNH LÀ 100 kPa ---
+  float default_pressure_kpa = 100.0;
+  // Tính toán % tương ứng với 100 kPa
+  int default_percentage = (default_pressure_kpa / maxPressure_kPa) * 100;
+  van1.targetPercentage = default_percentage;
+  van2.targetPercentage = default_percentage;
+  
+  Serial.println("---------------------------------------------------------");
+  Serial.print("Da dat ap suat mac dinh la ");
+  Serial.print(default_pressure_kpa);
+  Serial.println(" kPa.");
+  Serial.println("He thong san sang. Nhap lenh de thay doi: <van_so>,<phan_tram>");
+}
+
+void loop() {
+  // --- Nhận lệnh mới để ghi đè áp suất mặc định ---
+  if (Serial.available() > 0) {
+    String command = Serial.readStringUntil('\n');
+    int commaIndex = command.indexOf(',');
+    if (commaIndex > 0) {
+      int vanNumber = command.substring(0, commaIndex).toInt();
+      int newPercentage = command.substring(commaIndex + 1).toInt();
+      if (newPercentage >= 0 && newPercentage <= 100) {
+        if (vanNumber == 1) {
+          van1.targetPercentage = newPercentage;
+          Serial.print("\n=> Nhan lenh moi cho Van 1: "); Serial.print(van1.targetPercentage); Serial.println(" %\n");
+        } else if (vanNumber == 2) {
+          van2.targetPercentage = newPercentage;
+          Serial.print("\n=> Nhan lenh moi cho Van 2: "); Serial.print(van2.targetPercentage); Serial.println(" %\n");
+        }
+      }
+    }
+  }
+
+  // --- Cập nhật trạng thái cho từng van dựa trên targetPercentage hiện tại ---
+  capNhatVan(van1);
+  capNhatVan(van2);
+
+  // --- Hiển thị trạng thái ---
+  Serial.print("VAN 1 -> Lenh: "); Serial.print(van1.targetPercentage); Serial.print(" % | Phan hoi: "); Serial.print(van1.actualPressure_kPa, 1); Serial.print(" kPa");
+  Serial.print("   ||   ");
+  Serial.print("VAN 2 -> Lenh: "); Serial.print(van2.targetPercentage); Serial.print(" % | Phan hoi: "); Serial.print(van2.actualPressure_kPa, 1); Serial.println(" kPa");
+  
+  delay(1000); // Dừng 1 giây
+}
+
+// --- Các hàm chức năng ---
+
+void hieuChinhVan(VanController &van, int vanNumber) {
+  long rawSum = 0;
+  for (int i = 0; i < 200; i++) { rawSum += analogRead(van.monitorPin); delay(2); }
+  float avgRawValue = (float)rawSum / 200.0;
+  van.zeroVoltageBaseline = avgRawValue * (5.0 / 1023.0);
+  Serial.print("=> Hieu chinh Van "); Serial.print(vanNumber); Serial.print(" xong. Dien ap zero: ");
+  Serial.print(van.zeroVoltageBaseline, 3); Serial.println(" V");
+}
+
+void capNhatVan(VanController &van) {
+  // Điều khiển
+  uint16_t dacValue = map(van.targetPercentage, 0, 100, 0, 4095);
+  van.dac.setVoltage(dacValue, false);
+  
+  // Đọc phản hồi
+  long rawMonitorSum = 0;
+  for (int i = 0; i < NUM_SAMPLES; i++) { rawMonitorSum += analogRead(van.monitorPin); }
+  float monitorVoltage = ((float)rawMonitorSum / NUM_SAMPLES) * (5.0 / 1023.0);
+  
+  // Tính toán áp suất
+  if (monitorVoltage > van.zeroVoltageBaseline) {
+    van.actualPressure_kPa = map_double(monitorVoltage, van.zeroVoltageBaseline, 5.0, 0.0, maxPressure_kPa);
+  } else {
+    van.actualPressure_kPa = 0.0;
+  }
+}
+
+double map_double(double x, double in_min, double in_max, double out_min, double out_max) {
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
