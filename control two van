@@ -3,7 +3,7 @@
 
 // --- Cấu hình cho 2 van ---
 Adafruit_MCP4725 dac1; // DAC cho Van 1 (giả sử địa chỉ 0x60)
-Adafruit_MCP4725 dac2; // DAC cho Van 2 (giả sử địa chỉ 0x61)
+Adafruit_MCP4725 dac2; // DAC cho Van 2 (giả sử địa chỉ 0x60)
 
 const int monitorPin1 = A0; // Chân analog cho Van 1
 const int monitorPin2 = A1; // Chân analog cho Van 2
