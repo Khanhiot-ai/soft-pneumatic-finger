@@ -1,0 +1,137 @@
+#include <Arduino.h>
+#include <Wire.h>
+#include <Adafruit_MCP4725.h>
+// ===== CẤU HÌNH PHẦN CỨNG =====
+struct VanController {
+  Adafruit_MCP4725 dac;
+  uint8_t  i2c_address;      // 0x60 / 0x61
+  uint8_t  monitorPin;       // A0 / A1
+  float    zeroVoltage;      // V ở 0 kPa (thường ~1.00 V)
+  int      targetPct;        // 0..100 %
+  float    pressure_kPa;     // kPa sau khi quy đổi
+  float    emaV;             // điện áp sau lọc EMA
+  int      stableCnt;        // đếm ổn định cho dead-band
+};
+
+VanController van1 = { Adafruit_MCP4725(), 0x60, A0, 0.0f, 0, 0.0f, 0.0f, 0 };
+VanController van2 = { Adafruit_MCP4725(), 0x60, A1, 0.0f, 0, 0.0f, 0.0f, 0 };
+
+// ===== THAM SỐ =====
+const float maxPressure_kPa = 500.0f;   // đổi nếu model khác (ví dụ 1000 kPa)
+const int   NUM_SAMPLES     = 20;       // trung bình nhiều mẫu cho mượt
+const float EMA_ALPHA       = 0.2f;     // 0.1–0.3: lọc mượt
+const float ZERO_DEADBAND_V = 0.03f;    // ~30 mV coi như 0
+const int   STABLE_COUNT    = 5;        // số lần liên tiếp trong dead-band
+// ====================
+
+void hieuChinhZero(VanController &van, int label);
+void capNhatVan(VanController &van);
+void inPlotter(float p1, float p2);
+void xuLyLenhSerial();
+
+void setup() {
+  Serial.begin(115200);
+  while (!Serial) {}
+
+  van1.dac.begin(van1.i2c_address);
+  van2.dac.begin(van2.i2c_address);
+
+  Serial.println();
+  Serial.println(F("=== ITV1030 Dual Plot ==="));
+  Serial.println(F("Tools -> Serial Plotter (115200)."));
+  Serial.println(F("Lenh: <van>,<percent>  vi du: 1,50  hoac 2,80"));
+  Serial.println(F("Nhan 'Z' de hieu chinh lai zero (0 kPa)."));
+  delay(1500);
+
+  // HIỆU CHỈNH ZERO (đặt cả 2 van về 0 kPa trước khi chạy)
+  hieuChinhZero(van1, 1);
+  hieuChinhZero(van2, 2);
+
+  Serial.println(F("San sang ve bieu do ITV1/ITV2 (kPa)."));
+}
+
+void loop() {
+  xuLyLenhSerial();
+  capNhatVan(van1);
+  capNhatVan(van2);
+  inPlotter(van1.pressure_kPa, van2.pressure_kPa);
+  delay(50); // ~20 Hz
+}
+
+// ---------- HÀM PHỤ ----------
+void hieuChinhZero(VanController &van, int label) {
+  const int N = 200;
+  long sum = 0;
+  for (int i = 0; i < N; i++) { sum += analogRead(van.monitorPin); delay(2); }
+  float avgRaw = (float)sum / (float)N;
+  van.zeroVoltage = avgRaw * (5.0f / 1023.0f);
+  van.emaV = van.zeroVoltage; // khởi tạo EMA
+  van.stableCnt = 0;
+
+  Serial.print(F("Zero Van ")); Serial.print(label);
+  Serial.print(F(": ")); Serial.print(van.zeroVoltage, 3);
+  Serial.println(F(" V"));
+}
+
+void capNhatVan(VanController &van) {
+  // Xuất DAC theo % mục tiêu
+  int pct = constrain(van.targetPct, 0, 100);
+  uint16_t dacVal = map(pct, 0, 100, 0, 4095);
+  van.dac.setVoltage(dacVal, false);
+
+  // Đọc monitor & lọc
+  long rawSum = 0;
+  for (int i = 0; i < NUM_SAMPLES; i++) rawSum += analogRead(van.monitorPin);
+  float vAvg = ((float)rawSum / NUM_SAMPLES) * (5.0f / 1023.0f);
+
+  if (van.emaV == 0) van.emaV = vAvg;
+  van.emaV = EMA_ALPHA * vAvg + (1.0f - EMA_ALPHA) * van.emaV;
+
+  // Dead-band quanh zero để triệt nhiễu nhỏ
+  float dv = van.emaV - van.zeroVoltage;
+  if (fabs(dv) < ZERO_DEADBAND_V) {
+    van.stableCnt++;
+    if (van.stableCnt >= STABLE_COUNT) van.pressure_kPa = 0.0f;
+  } else {
+    van.stableCnt = 0;
+    float inMin = van.zeroVoltage;  // ~1.0 V
+    float inMax = 5.0f;
+    float dvPos = max(0.0f, van.emaV - inMin);
+    van.pressure_kPa = (dvPos / (inMax - inMin)) * maxPressure_kPa;
+    van.pressure_kPa = constrain(van.pressure_kPa, 0.0f, maxPressure_kPa);
+  }
+}
+
+void inPlotter(float p1, float p2) {
+  // Dạng có nhãn để Serial Plotter tạo 2 series tên ITV1/ITV2
+  Serial.print(F("ITV1:")); Serial.print(p1, 2);
+  Serial.print('\t');
+  Serial.print(F("ITV2:")); Serial.println(p2, 2);
+}
+
+void xuLyLenhSerial() {
+  if (!Serial.available()) return;
+
+  // Cho phép nhấn 'Z' để hiệu chỉnh lại
+  if (Serial.peek() == 'Z' || Serial.peek() == 'z') {
+    Serial.read();
+    Serial.println(F("Hieu chinh lai ZERO (dat 0 kPa)..."));
+    hieuChinhZero(van1, 1);
+    hieuChinhZero(van2, 2);
+    return;
+  }
+
+  // Đặt %: "<van>,<percent>"
+  String cmd = Serial.readStringUntil('\n');
+  cmd.trim();
+  int comma = cmd.indexOf(',');
+  if (comma <= 0) return;
+
+  int vanNo = cmd.substring(0, comma).toInt();
+  int pct   = cmd.substring(comma + 1).toInt();
+  pct = constrain(pct, 0, 100);
+
+  if (vanNo == 1) { van1.targetPct = pct; Serial.print(F("[OK] Van1->")); Serial.print(pct); Serial.println('%'); }
+  else if (vanNo == 2) { van2.targetPct = pct; Serial.print(F("[OK] Van2->")); Serial.print(pct); Serial.println('%'); }
+  else { Serial.println(F("[ERR] Van chi 1 hoac 2.")); }
+}
