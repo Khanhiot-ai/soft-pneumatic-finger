@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="29d6120d-e811-49c7-8752-46dc9a0e3a3c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/GUI_robot.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/12345.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2ngon.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/abc.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app_3.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app_4.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app_filter.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data_process.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/falke_new.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/game.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/heat_map.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/masat.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/van.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ve_do_thi.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/visualize.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/visualize_van.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2wg3JnnOUNYisjciWRuogjmMnVS" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.12345.executor&quot;: &quot;Run&quot;,
+    &quot;Python.2ngon.executor&quot;: &quot;Run&quot;,
+    &quot;Python.abc.executor&quot;: &quot;Run&quot;,
+    &quot;Python.app_3.executor&quot;: &quot;Run&quot;,
+    &quot;Python.app_4.executor&quot;: &quot;Run&quot;,
+    &quot;Python.app_filter.executor&quot;: &quot;Run&quot;,
+    &quot;Python.audioFz.executor&quot;: &quot;Run&quot;,
+    &quot;Python.falke_new.executor&quot;: &quot;Run&quot;,
+    &quot;Python.filterClass.executor&quot;: &quot;Run&quot;,
+    &quot;Python.game.executor&quot;: &quot;Run&quot;,
+    &quot;Python.heat_map.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.masat.executor&quot;: &quot;Run&quot;,
+    &quot;Python.van.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ve_do_thi.executor&quot;: &quot;Run&quot;,
+    &quot;Python.visualize.executor&quot;: &quot;Run&quot;,
+    &quot;Python.visualize_van.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/LENOVO/PycharmProjects/GUI_robot&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\LENOVO\PycharmProjects\GUI_robot" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="GUI_robot" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-b26f3e71634d-JavaScript-PY-251.26094.141" />
+        <option value="bundled-python-sdk-9f8e2b94138c-36ea0e71a18c-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-251.26094.141" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="29d6120d-e811-49c7-8752-46dc9a0e3a3c" name="Changes" comment="" />
+      <created>1746449319932</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1746449319932</updated>
+      <workItem from="1752492096628" duration="445000" />
+      <workItem from="1752492594072" duration="2086000" />
+      <workItem from="1752497704686" duration="2000" />
+      <workItem from="1752511778893" duration="21000" />
+      <workItem from="1753327754454" duration="6503000" />
+      <workItem from="1753772761417" duration="2737000" />
+      <workItem from="1753867513039" duration="2407000" />
+      <workItem from="1753932205564" duration="9283000" />
+      <workItem from="1754298691220" duration="2912000" />
+      <workItem from="1754309394119" duration="2128000" />
+      <workItem from="1754314194782" duration="105000" />
+      <workItem from="1754379535831" duration="9309000" />
+      <workItem from="1754468273413" duration="7580000" />
+      <workItem from="1754497191725" duration="9093000" />
+      <workItem from="1754901106968" duration="4096000" />
+      <workItem from="1754979738180" duration="16201000" />
+      <workItem from="1755022274412" duration="917000" />
+      <workItem from="1755096186631" duration="55000" />
+      <workItem from="1755159158415" duration="6549000" />
+      <workItem from="1755246052694" duration="84000" />
+      <workItem from="1755509716811" duration="5892000" />
+      <workItem from="1755598518912" duration="2860000" />
+      <workItem from="1755663634367" duration="2453000" />
+      <workItem from="1755670621006" duration="12584000" />
+      <workItem from="1755690917902" duration="275000" />
+      <workItem from="1755754664631" duration="5399000" />
+      <workItem from="1755780613332" duration="51000" />
+      <workItem from="1755835673026" duration="1945000" />
+      <workItem from="1755912777729" duration="3256000" />
+      <workItem from="1756037226383" duration="22000" />
+      <workItem from="1756114205471" duration="2215000" />
+      <workItem from="1756278509710" duration="5318000" />
+      <workItem from="1756351678447" duration="12552000" />
+      <workItem from="1756436303731" duration="6976000" />
+      <workItem from="1756611527736" duration="20000" />
+      <workItem from="1756882484251" duration="3362000" />
+      <workItem from="1756977235808" duration="4320000" />
+      <workItem from="1757001954328" duration="33000" />
+      <workItem from="1757043700847" duration="11497000" />
+      <workItem from="1757129885550" duration="18386000" />
+      <workItem from="1757174856469" duration="12000" />
+      <workItem from="1757212462634" duration="1596000" />
+      <workItem from="1757299982709" duration="10932000" />
+      <workItem from="1757344152087" duration="12000" />
+      <workItem from="1757386659183" duration="6308000" />
+      <workItem from="1757476424807" duration="4094000" />
+      <workItem from="1757526802869" duration="11708000" />
+      <workItem from="1757538702883" duration="17000" />
+      <workItem from="1757568303421" duration="1000" />
+      <workItem from="1757577042311" duration="8754000" />
+      <workItem from="1757607179145" duration="8179000" />
+      <workItem from="1757648035605" duration="14793000" />
+      <workItem from="1757698881367" duration="6541000" />
+      <workItem from="1757766102016" duration="1547000" />
+      <workItem from="1757901953523" duration="2355000" />
+      <workItem from="1757916743607" duration="8000" />
+      <workItem from="1757929129585" duration="1751000" />
+      <workItem from="1757990052681" duration="261000" />
+      <workItem from="1757993987711" duration="6000" />
+      <workItem from="1758010427946" duration="6985000" />
+      <workItem from="1758034508517" duration="7591000" />
+      <workItem from="1758073817573" duration="3799000" />
+      <workItem from="1758077891908" duration="10457000" />
+      <workItem from="1758264739336" duration="3522000" />
+      <workItem from="1758435259430" duration="31000" />
+      <workItem from="1758533638902" duration="1214000" />
+      <workItem from="1759138641646" duration="14000" />
+      <workItem from="1759734211277" duration="4807000" />
+      <workItem from="1760041037147" duration="10000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/GUI_robot$12345.coverage" NAME="12345 Coverage Results" MODIFIED="1758084965399" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/GUI_robot$falke_new.coverage" NAME="falke_new Coverage Results" MODIFIED="1758039262071" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/GUI_robot$app_4.coverage" NAME="app_4 Coverage Results" MODIFIED="1755688349407" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/GUI_robot$ve_do_thi.coverage" NAME="ve_do_thi Coverage Results" MODIFIED="1758010809390" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/GUI_robot$heat_map.coverage" NAME="heat_map Coverage Results" MODIFIED="1758088485056" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/GUI_robot$visualize_van.coverage" NAME="visualize_van Coverage Results" MODIFIED="1757701825108" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/GUI_robot$van.coverage" NAME="van Coverage Results" MODIFIED="1755600651374" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/GUI_robot$audioFz.coverage" NAME="audioFz Coverage Results" MODIFIED="1757052054008" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/fz" />
+    <SUITE FILE_PATH="coverage/GUI_robot$game.coverage" NAME="game Coverage Results" MODIFIED="1759734415705" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/GUI_robot$2ngon.coverage" NAME="2ngon Coverage Results" MODIFIED="1755663847861" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/GUI_robot$masat.coverage" NAME="masat Coverage Results" MODIFIED="1757052059337" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/fz" />
+    <SUITE FILE_PATH="coverage/GUI_robot$app_filter.coverage" NAME="app_filter Coverage Results" MODIFIED="1758268252725" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/GUI_robot$filterClass.coverage" NAME="filterClass Coverage Results" MODIFIED="1755938884518" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/GUI_robot$visualize.coverage" NAME="visualize Coverage Results" MODIFIED="1758039142991" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/GUI_robot$main.coverage" NAME="main Coverage Results" MODIFIED="1755780616102" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/GUI_robot$app_3.coverage" NAME="app_3 Coverage Results" MODIFIED="1757705134560" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/GUI_robot$abc.coverage" NAME="abc Coverage Results" MODIFIED="1758264749997" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+</project>
